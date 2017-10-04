@@ -6,6 +6,28 @@
   <script src="./app.js"></script>
 </head>
 <body>
+  <h1>Account Balances</h1>
+  <!-- <h3>You have <span class="black"><span id="balance"></span> META</span></h3> -->
+  <br>
+  <br><label for="amount">Amount In User Account:</label><label type="text" id="balanceUser" placeholder="e.g., 95"></label>
+  <br><label for="amount">Amount In Merchant Account:</label><label type="text" id="balanceMerchant" placeholder="e.g., 95"></label>
+  <br><label for="amount">Amount In Escrow Account:</label><label type="text" id="balanceEscrow" placeholder="e.g., 95"></label>
+  <br><label for="amount">Amount In Charity Account:</label><label type="text" id="balanceCharity" placeholder="e.g., 95"></label>
+  <br>
+  <br>
+  <!--<h1>MetaCoin</h1>-->
+  <!--<h2>Example Truffle Dapp</h2>-->
+  <!--<h3>You have <span class="black"><span id="balance"></span> META</span></h3>-->
+
+  <!--<br>-->
+  <h1>Welcome Merchant</h1>
+  <h2>Contribute Ether</h2>
+  <!-- <h3>You have <span class="black"><span id="balance"></span> META</span></h3> -->
+  <br>
+  <br><label for="amount">Amount:</label><input type="text" id="amountEscrow" placeholder="e.g., 95"></input>
+  <br><br><button id="sendEscrow" onclick="App.sendEtherToEscrow()">Send To Escrow</button>
+  <br><br>
+
   <h1>MetaCoin</h1>
   <h2>Example Truffle Dapp</h2>
   <h3>You have <span class="black"><span id="balance"></span> META</span></h3>

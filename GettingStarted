@@ -1,0 +1,9 @@
+OSX/Linux instructions:
+1. Install testrpc
+2. Install truffle
+3. Browse to the project folder
+4. Run truffle compile in terminal
+5. Run truffle migrate in terminal
+6. Run testrpc in terminal
+7. Change var charityMerchantUserContractAddress = '0x6e011ab720db6ae432497c4a865d55b6f877c9f3'; to match the address of the smart contract
+8. Type npm run dev in terminal

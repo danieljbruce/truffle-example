@@ -7,7 +7,8 @@ body {
 
 label {
   display: inline-block;
-  width: 100px;
+  padding: 10px;
+  /*width: 200px;*/
 }
 
 input {
@@ -49,4 +50,10 @@ h3 {
 
 .hint {
   color: #666;
+}
+
+button{
+  border-width: 1px;
+  border-style: solid;
+  background-color: silver !important;
 }

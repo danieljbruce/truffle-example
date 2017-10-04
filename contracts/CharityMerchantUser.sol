@@ -4,13 +4,25 @@ contract CharityMerchantUser {
     // Charities that can be approved by the owner
     // Badges that can be issued by the charities to the user
 
+    // User story 1
+    // 1. Merchant sets aside escrow of funds.
+    // 2. User initiates offer to answer question posed by merchant (user specifies amount and specifies charity as well as merchant).
+    // 3. Merchant accepts the offer from the user.
+    // 4. User fulfills the promise with yes or no question. (consolidated in step 3)
+    // 5. User is awarded a badge and his social credit score increases.
+    // 6. Ether is moved from escrow account to charity.
+    // 7. Merchant is awarded a badge.
+
     address owner;
-    mapping(address => uint) public charityType; // Charity and badge association
+    uint indexOfBadge;
+    mapping (uint => address) public badgeRecipient; // Charity and badge association
     mapping (uint => string) badgeAsString; // Mapping from badge types as integer to strings like 'Health' for example
+
+
     uint indexOfOfferFromUser; // The index of the offer which is incremented each time the user initiates an offer
     //
     mapping (address => uint) escrowBalanceByMerchant; // This is the balance in the escrow pledged by the merchant
-//    //    // Key in the following variables represents the index of an offer initiated by a user
+    //    //    // Key in the following variables represents the index of an offer initiated by a user
     mapping (uint => uint) indexToAmount; // Ether offered by merchant to charity in exchange for user's input to survey (1st address is merchant, 2nd address is user)
     mapping (uint => address) indexToCharity;
     mapping (uint => address) indexToUser; // index of the transaction initiated mapped to the user address
@@ -21,16 +33,7 @@ contract CharityMerchantUser {
 
     // @TODO Define business logic for issuing badges (which charities can issue badges?)
     // @TODO Handle transaction gas costs needed for transferring from contract
-    // @TODO Write a withdraw function from escrow funds
-
-    // User story 1
-    // 1. Merchant sets aside escrow of funds.
-    // 2. User initiates offer to answer question posed by merchant (user specifies amount and specifies charity as well as merchant).
-    // 3. Merchant accepts the offer from the user.
-    // 4. User fulfills the promise with yes or no question. (consolidated in step 3)
-    // 5. User is awarded a badge and his social credit score increases.
-    // 6. Ether is moved from escrow account to charity.
-    // 7. Merchant is awarded a badge.
+    // @TODO Write a withdraw function for withdrawing escrow funds
 
     // register as charity
     // register qs merchant
@@ -65,7 +68,11 @@ contract CharityMerchantUser {
         }
     }
 
-    function withdrawEscrow(){ // Write this function to withdraw ether from the escrow account
-
+    function issueBadge(address recipient, string badgeString){
+        if (msg.sender == owner){
+            badgeRecipient[indexOfBadge] = recipient;
+            badgeAsString[indexOfBadge] = badgeString;
+            indexOfBadge = indexOfBadge + 1;
+        }
     }
 }
