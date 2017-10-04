@@ -8,10 +8,12 @@ import { default as contract } from 'truffle-contract'
 // Import our contract artifacts and turn them into usable abstractions.
 import metacoin_artifacts from '../../build/contracts/MetaCoin.json'
 import piggybank_artifacts from '../../build/contracts/PiggyBank.json'
+import charity_merchant_user_artifacts from '../../build/contracts/CharityMerchantUser.json'
 
 // MetaCoin is our usable abstraction, which we'll use through the code below.
 var MetaCoin = contract(metacoin_artifacts);
 var PiggyBank = contract(piggybank_artifacts);
+var CharityMerchantUser = contract(charity_merchant_user_artifacts);
 
 // The following code is simple to show off interacting with your contracts.
 // As your needs grow you will likely need to change its form and structure.
@@ -31,10 +33,10 @@ var charityBalance = 0;
 
 window.App = {
   updateBalances : function(){
-    userAddress = window.web3.eth.accounts[0];
+    userAddress = window.web3.eth.accounts[1];
     escrowAddress = charityMerchantUserContractAddress;
-    merchantAddress = window.web3.eth.accounts[1];
-    charityAddress = window.web3.eth.accounts[2];
+    merchantAddress = window.web3.eth.accounts[2];
+    charityAddress = window.web3.eth.accounts[3];
     window.web3.eth.getBalance(userAddress, function (error, result) {
       if (!error) {
         // window.web3.toEther(amount, "wei")}
@@ -185,6 +187,7 @@ window.App = {
 
     var amount = parseInt(document.getElementById("amountEscrow").value);
     var eth = window.web3.eth;
+    console.log("Merchant Address:", merchantAddress);
     eth.sendTransaction({from:merchantAddress, to:escrowAddress, value: window.web3.toWei(amount, "ether")});
     this.updateBalances();
 
@@ -199,6 +202,22 @@ window.App = {
     //   console.log(e);
     //   self.setStatus("Error sending coin; see log.");
     // });
+  },
+
+  printEvents: function(){
+    var self = this;
+    var contract;
+    CharityMerchantUser.deployed().then(function(instance) {
+      contract = instance;
+      console.log('Obtained contract instance');
+      var events = contract.allEvents();
+      console.log("Events:");
+      console.log(events);
+    }).catch(function(e) {
+      console.log("Error printing events");
+      console.log(e);
+      self.setStatus("Error sending coin; see log.");
+    });
   }
 
   // piggyDeposit: function(){

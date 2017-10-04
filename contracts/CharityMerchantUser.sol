@@ -1,4 +1,6 @@
-pragma solidity ^0.4.0;
+pragma solidity ^0.4.2;
+
+import "./ConvertLib.sol";
 
 contract CharityMerchantUser {
     // Charities that can be approved by the owner
@@ -13,11 +15,15 @@ contract CharityMerchantUser {
     // 6. Ether is moved from escrow account to charity.
     // 7. Merchant is awarded a badge.
 
+    event userStartsTransactionEvent(uint amount, address merchant, address charity);
+    event contributeToEscrowEvent(uint amount);
+    event acceptOfferFromUserEvent(uint index);
+    event issueBadgeEvent(address recipient, string badgeString);
+
     address owner;
     uint indexOfBadge;
     mapping (uint => address) public badgeRecipient; // Charity and badge association
     mapping (uint => string) badgeAsString; // Mapping from badge types as integer to strings like 'Health' for example
-
 
     uint indexOfOfferFromUser; // The index of the offer which is incremented each time the user initiates an offer
     //
@@ -45,6 +51,7 @@ contract CharityMerchantUser {
     // This function is for user story 1 step 1
     function () payable { // This function is executed when the contract recieves ether
         uint valueToAdd = msg.value;
+        contributeToEscrowEvent(valueToAdd);
         escrowBalanceByMerchant[msg.sender] = escrowBalanceByMerchant[msg.sender] + valueToAdd;
     }
 
@@ -55,6 +62,7 @@ contract CharityMerchantUser {
         indexToCharity[indexOfOfferFromUser] = charity;
         indexToMerchant[indexOfOfferFromUser] = merchant;
         indexToUser[indexOfOfferFromUser] = msg.sender;
+        userStartsTransactionEvent(amount, merchant, charity);
     }
 
     // This function is for user story 1 step 3 through 7
@@ -65,6 +73,7 @@ contract CharityMerchantUser {
             escrowBalanceByMerchant[indexToMerchant[index]] = escrowBalanceByMerchant[indexToMerchant[index]] - indexToAmount[index];
             indexToCharity[index].transfer(indexToAmount[index]);
             indexToIsTransactionComplete[index] = true; // Finalizes the transaction
+            acceptOfferFromUserEvent(index);
         }
     }
 
@@ -73,6 +82,7 @@ contract CharityMerchantUser {
             badgeRecipient[indexOfBadge] = recipient;
             badgeAsString[indexOfBadge] = badgeString;
             indexOfBadge = indexOfBadge + 1;
+            issueBadgeEvent(recipient, badgeString);
         }
     }
 }
